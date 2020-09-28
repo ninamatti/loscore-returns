@@ -9,7 +9,7 @@ class LoScore {
   |~~~~~~~~~~
   * */
   uniq(array) {
-    let arr = [];
+    const arr = [];
     for (let i = 0; i < array.length; i++) {
       if (!arr.includes(array[i])) arr.push(array[i]);
     }
@@ -34,8 +34,8 @@ class LoScore {
   }
 
   map(collection, iteratee) {
-    let arr = [];
-    this.each(collection, function(value) {
+    const arr = [];
+    this.each(collection, (value) => {
       arr.push(iteratee(value));
     });
     return arr;
@@ -48,8 +48,8 @@ class LoScore {
   }
 
   reject(collection, test) {
-    let arr = [];
-    this.filter(collection, function(value) {
+    const arr = [];
+    this.filter(collection, (value) => {
       if (!test(value)) arr.push(value);
     });
     return arr;
@@ -58,12 +58,12 @@ class LoScore {
   reduce(collection, iterator, accumulator) {
     if (accumulator === undefined) {
       accumulator = collection[0];
-      let arr = collection.slice(1);
-      this.each(arr, function(value) {
+      const arr = collection.slice(1);
+      this.each(arr, (value) => {
         return (accumulator = iterator(accumulator, value));
       });
     } else {
-      this.each(collection, function(value) {
+      this.each(collection, (value) => {
         return (accumulator = iterator(accumulator, value));
       });
     }
@@ -78,7 +78,7 @@ class LoScore {
         if (predicate === undefined) return true;
         if (!isTrue) return false;
         if (!predicate(value)) return false;
-        else return true;
+        return true;
       },
       true
     );
@@ -88,9 +88,9 @@ class LoScore {
   | OBJECTS
   |~~~~~~~~~~
   * */
-  extend(obj) {
-    this.each(arguments, function(newObj) {
-      for (let key in newObj) {
+  extend(obj, ...args) {
+    this.each(args, (newObj) => {
+      for (const key in newObj) {
         obj[key] = newObj[key];
       }
     });
@@ -110,32 +110,29 @@ class LoScore {
         result = func(input);
         calledBefore = true;
         return result;
-      } else {
-        return result;
       }
+      return result;
     };
   }
 
   memoize(func) {
-    let history = {};
+    const history = {};
     return function(input) {
       if (input in history) {
         return input;
-      } else {
-        let result = func(input);
-        history[input] = JSON.stringify(result);
-        return result;
       }
+      const result = func(input);
+      history[input] = JSON.stringify(result);
+      return result;
     };
   }
 
   invoke(collection, functionOrKey) {
-    return this.map(collection, function(input) {
+    return this.map(collection, (input) => {
       if (typeof functionOrKey === "function") {
         return functionOrKey.apply(input);
-      } else {
-        return input[functionOrKey].apply(input);
       }
+      return input[functionOrKey].apply(input);
     });
   }
 
