@@ -70,7 +70,7 @@ class LoScore {
     return accumulator;
   }
 
-  every() {
+  every(collection, predicate) {
     if (collection.length === 0) return true;
     return this.reduce(
       collection,
@@ -89,7 +89,12 @@ class LoScore {
   |~~~~~~~~~~
   * */
   extend(obj) {
-    // YOUR CODE HERE
+    this.each(arguments, function(newObj) {
+      for (let key in newObj) {
+        obj[key] = newObj[key];
+      }
+    });
+    return obj;
   }
 
   /**
@@ -98,15 +103,40 @@ class LoScore {
   * */
 
   once(func) {
-    // YOUR CODE HERE
+    let calledBefore = false;
+    let result;
+    return function(input) {
+      if (calledBefore === false) {
+        result = func(input);
+        calledBefore = true;
+        return result;
+      } else {
+        return result;
+      }
+    };
   }
 
   memoize(func) {
-    // YOUR CODE HERE
+    let history = {};
+    return function(input) {
+      if (input in history) {
+        return input;
+      } else {
+        let result = func(input);
+        history[input] = JSON.stringify(result);
+        return result;
+      }
+    };
   }
 
   invoke(collection, functionOrKey) {
-    // YOUR CODE HERE
+    return this.map(collection, function(input) {
+      if (typeof functionOrKey === "function") {
+        return functionOrKey.apply(input);
+      } else {
+        return input[functionOrKey].apply(input);
+      }
+    });
   }
 
   /**
