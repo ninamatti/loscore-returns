@@ -74,7 +74,7 @@ class LoScore {
     if (collection.length === 0) return true;
     return this.reduce(
       collection,
-      function(isTrue, value) {
+      (isTrue, value) => {
         if (predicate === undefined) return true;
         if (!isTrue) return false;
         if (!predicate(value)) return false;
